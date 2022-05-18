@@ -41,8 +41,9 @@ plotmeans(gpa.female$gpa ~ gpa.female$occas, data = gpa.female, lwd = 10, barwid
 myplot <- nparLD(gpa ~ occas * sex, data = gpa, subject = "student", description = FALSE)
 
 plot(myplot)
-
 # Model ----
+
+## Unconditional means Model ----
 
 model.gpa <- lme(gpa ~ 1, gpa, random = ~1 |student)
 
@@ -51,4 +52,61 @@ summary(model.gpa)
 VC.gpa <- VarCorr(model.gpa)
 
 icc.gpa <- as.numeric(VC.gpa[1,1]) / (as.numeric(VC.gpa[1,1]) + as.numeric(VC.gpa[2,1]))
+
+## Unconditional growth model ----
+
+a.model.gpa <- lme(gpa ~ occas , data = gpa, random = ~ occas | student, method = "ML")
+
+summary(a.model.gpa)
+
+VarCorr(a.model.gpa)
+
+a.fixef <- fixef(a.model.gpa)
+
+a.fit <- a.fixef[[1]] + gpa$occas[1:6]*a.fixef[[2]]
+a.fit
+
+## Model (gender effects)
+
+b.model.gpa <- lme(gpa ~ sex*occas , data = gpa, random = ~ occas | student, method = "ML")
+
+summary(b.model.gpa)
+
+VarCorr(b.model.gpa)
+
+b.fixef <- fixef(b.model.gpa)
+
+b1.fit <- b.fixef[[1]] + gpa$occas[1:6]*b.fixef[[3]]
+
+b0.fit <- b.fixef[[1]] + b.fixef[[2]] + gpa$occas[1:6]*b.fixef[[3]] + gpa$occas[1:6]*b.fixef[[4]]
+
+# Model (high school gpa & gender effects)
+head(gpa)
+
+c.model.gpa <- lme(gpa ~ sex*occas +  highgpa*occas, data = gpa, random = ~ occas | student, method = "ML")
+
+summary(c.model.gpa)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
