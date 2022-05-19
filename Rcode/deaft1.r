@@ -1,10 +1,12 @@
 # Library----
+
 library(lattice)
 library(gplots)
 library(nparLD)
 library(tidyverse)
 library(nlme)
 
+# Question 1 ----
 # Data Load----
 
 gpa <- read.csv("Data/gpa.csv", header = TRUE) %>% 
@@ -41,6 +43,7 @@ plotmeans(gpa.female$gpa ~ gpa.female$occas, data = gpa.female, lwd = 10, barwid
 myplot <- nparLD(gpa ~ occas * sex, data = gpa, subject = "student", description = FALSE)
 
 plot(myplot)
+
 # Model ----
 
 ## Unconditional means Model ----
@@ -53,7 +56,7 @@ VC.gpa <- VarCorr(model.gpa)
 
 icc.gpa <- as.numeric(VC.gpa[1,1]) / (as.numeric(VC.gpa[1,1]) + as.numeric(VC.gpa[2,1]))
 
-## Unconditional growth model ----
+## Model A (Unconditional growth model) ----
 
 a.model.gpa <- lme(gpa ~ occas , data = gpa, random = ~ occas | student, method = "ML")
 
@@ -66,7 +69,7 @@ a.fixef <- fixef(a.model.gpa)
 a.fit <- a.fixef[[1]] + gpa$occas[1:6]*a.fixef[[2]]
 a.fit
 
-## Model (gender effects)
+## Model B (gender effects)
 
 b.model.gpa <- lme(gpa ~ sex*occas , data = gpa, random = ~ occas | student, method = "ML")
 
@@ -80,34 +83,75 @@ b1.fit <- b.fixef[[1]] + gpa$occas[1:6]*b.fixef[[3]]
 
 b0.fit <- b.fixef[[1]] + b.fixef[[2]] + gpa$occas[1:6]*b.fixef[[3]] + gpa$occas[1:6]*b.fixef[[4]]
 
-# Model (high school gpa & gender effects)
+# Model C (high school gpa & gender effects)
 head(gpa)
 
 c.model.gpa <- lme(gpa ~ sex*occas +  highgpa*occas, data = gpa, random = ~ occas | student, method = "ML")
 
 summary(c.model.gpa)
->>>>>>> Ques1
 
 
 
+# ===============================================================================================================
 
 
+# Question 2
+# Load Data
 
+math <- read.csv("Data/mathscore.csv", head = TRUE)
 
+dim(math)
+str(math)
+head(math)
+View(math)
 
+# Model A (effective effects) Q1
 
+# Which variable talking about?
+a.model.math <- lme(test ~ effective*time, data = math, random = ~ time | id, method = "ML")
+summary(a.model.math)
 
+a.fixef.math <- fixef(a.model.math)
 
+a0.fit.math <- a.fixef.math[[1]] + math$time[1:3]*a.fixef.math[[3]]
 
+a1.fit.math <- a.fixef.math[[1]] + a.fixef.math[[2]] + math$time[1:3]*a.fixef.math[[3]] + math$time[1:3]*a.fixef.math[[4]]
 
+plot(math$time[1:3], a0.fit.math,  ylim=c(45, 65), type="b", 
+     ylab="predicted test", xlab="year")
 
+lines(math$time[1:3], a1.fit.math, type="b", pch=17)   
 
+title("Model A") 
 
+legend(14, 2, c("effective=0", "effective=1"))
 
+VarCorr(a.model.math)
 
+# Model B (unconditional means model) Q2
 
+b.model.math <- lme(test ~ 1, math, random = ~1 | id)
 
+summary(b.model.math)
 
+b.var.math <- VarCorr(b.model.math)
 
+b.icc.math <- as.numeric(b.var.math[1,1]) / (as.numeric(b.var.math[1,1]) + as.numeric(b.var.math[2,1]))
 
+# Model C (unconditional growth model) Q3
+c.model.math <- lme(test ~ time, data = math, random = ~ time | id, method = "ML")
 
+summary(c.model.math)
+
+# Model D (effective teachers effects) Q4
+
+d.model.math <- lme(test ~ effective*time, data = math, random = ~ time | id, method = "ML")
+
+summary(d.model.math)
+
+# Model E (effective teacher & ses effects) Q5,6
+
+e.model.math <- lme(test ~ effective*time + ses*time, data = math, random = ~ time | id, method = "ML")
+
+summary(e.model.math)
+ 
