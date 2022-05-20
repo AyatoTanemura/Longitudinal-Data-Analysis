@@ -16,7 +16,7 @@ dim(gpa)
 str(gpa)
 View(gpa)
 
-## First 10 students
+## First 10 students Q1
 
 gpa10 <- gpa[gpa$student %in% c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), ]
 
@@ -46,7 +46,7 @@ plot(myplot)
 
 # Model ----
 
-## Unconditional means Model ----
+## Unconditional means Model Q2 
 
 model.gpa <- lme(gpa ~ 1, gpa, random = ~1 |student)
 
@@ -56,7 +56,7 @@ VC.gpa <- VarCorr(model.gpa)
 
 icc.gpa <- as.numeric(VC.gpa[1,1]) / (as.numeric(VC.gpa[1,1]) + as.numeric(VC.gpa[2,1]))
 
-## Model A (Unconditional growth model) ----
+## Model A (Unconditional growth model) Q2 
 
 a.model.gpa <- lme(gpa ~ occas , data = gpa, random = ~ occas | student, method = "ML")
 
@@ -69,12 +69,14 @@ a.fixef <- fixef(a.model.gpa)
 a.fit <- a.fixef[[1]] + gpa$occas[1:6]*a.fixef[[2]]
 a.fit
 
-## Model B (gender effects)
+## Model B (gender effects) Q3
 
 b.model.gpa <- lme(gpa ~ sex*occas , data = gpa, random = ~ occas | student, method = "ML")
 
 summary(b.model.gpa)
 
+    ### Pesudo R2 & Variance component
+VarCorr(a.model.gpa)
 VarCorr(b.model.gpa)
 
 b.fixef <- fixef(b.model.gpa)
@@ -83,7 +85,7 @@ b1.fit <- b.fixef[[1]] + gpa$occas[1:6]*b.fixef[[3]]
 
 b0.fit <- b.fixef[[1]] + b.fixef[[2]] + gpa$occas[1:6]*b.fixef[[3]] + gpa$occas[1:6]*b.fixef[[4]]
 
-# Model C (high school gpa & gender effects)
+# Model C (high school gpa & gender effects) Q4
 head(gpa)
 
 c.model.gpa <- lme(gpa ~ sex*occas +  highgpa*occas, data = gpa, random = ~ occas | student, method = "ML")
@@ -124,7 +126,7 @@ lines(math$time[1:3], a1.fit.math, type="b", pch=17)
 
 title("Model A") 
 
-legend(14, 2, c("effective=0", "effective=1"))
+legend(0.0, 65,c("effective=o", "effective=^"))
 
 VarCorr(a.model.math)
 
@@ -148,6 +150,8 @@ summary(c.model.math)
 d.model.math <- lme(test ~ effective*time, data = math, random = ~ time | id, method = "ML")
 
 summary(d.model.math)
+
+VarCorr(d.model.math)
 
 # Model E (effective teacher & ses effects) Q5,6
 

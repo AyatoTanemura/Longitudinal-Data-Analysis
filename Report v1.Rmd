@@ -1,0 +1,179 @@
+---
+title: "Assignment 1"
+author: "Ayato Tanemura (atan524)"
+output: 
+  pdf_document:
+    toc: true
+    toc_depth: 2
+  
+---
+
+\newpage
+
+```{r include=FALSE}
+knitr::opts_chunk$set(comment = ">", echo=FALSE)
+```
+
+# Question 1
+
+## 1
+
+GPA and Occasion appears linear in six consecutive occasions.
+
+ID 1 - 10: GPA tends to increase gradually from occasion 0 to occasion 5. 
+
+Generally there is considerable changes in GPA over years. And it is a linear trajectory for the identified change.
+
+## 2
+
+### Unconditional means model
+
+* The composite model is :
+
+GPA = 2.87 + e
+
+* Estimate of fixed effect : 
+
+The initial status of GPA at occasion 0 is 2.87 (p-vale = 0) at 0.01 level of significance.
+
+### Unconditional growth model
+
+* The composite model: 
+
+Level1: GPA = a + b * Occas + j
+
+Level2: a = 2.60 + y_0i, b = 0.11 + y_1i
+
+GPA = 2.60 + 0.11 * Occas + e  (With composite residual : e = y_0i + y_1i * Occas + j)
+
+* Estimate of fixed effect
+
+1. The estimated initial GPA is 2.60 (p-vale = 0) at 0.01 level of significance.
+
+2. The rate of change at the occasion 0 is 0.11 (p-vale = 0) at 0.01 level of significance.
+
+## 3
+
+* Estimate of fixed effect:
+
+1. The estimated initial GPA for the average male is 2.56 (p < 0.01).
+
+2. The estimated differential initial GPA between male and female is 0.076 (p > 0.01).
+
+3. The estimated rate of change in GPA for an average male is 0.29 (p < 0.01).
+
+4. The estimated differential in the rate of change in gender is 0.029. However, the estimate differential in the rate of change in GPA between male and female is indistinguishable (p > 0.01).
+
+* Variance components `where can I get the inside of ()`
+
+Level 1 (within person variance) gets the estimate of 0.042 ().
+
+Level 2 (between person variance) receives the estimate of 0.043 () for the initial status and 0.0043 () for the rate of change.
+
+* Pseudo R2 statistics:
+
+Pseudo R2 = (0.043433442 - 0.04485619) / 0.043433442 = -0.0328
+
+-> 3.28% of the between-person variability in EMPL is associated with linear time.
+
+## 4
+
+* The effect on initial status and rate of change
+
+1. The estimated initial GPA for the average male is 2.28 (p < 0.01).
+
+2. The estimated differential in initial GPA between gender, controlling for GPA in high school is 0.084 (p < 0.05)
+
+3. The estimated rate of change in GPA for an average male is 0.093 (p < 0.01).
+
+4. The estimated differential in initial GPA for difference in GPA controlling for gender at the initial stage is 0.094 (p < 0.01).
+
+5. The estimated differential in the rate of change in gender is 0.029. However, the estimated differential in the rate of change in GPA between gender is indistinguishable from 0 (p > 0.01).
+
+6. The estimated differential in the rate of change of GDP in high school is -0.00046. However, the estimate differential in the rate of change in GPA of GPA in high school is indistinguishable (p > 0.01). 
+
+## 5
+
+AIC & BIC
+
+model A: 258.2342, 288.7747 
+
+model B: 245.9189, 286.6395 
+
+model C: 238.7753, 289.676 
+
+According to the outcome as above, AIC and BIC show the different result. Since AIC shows the bigger differences between two closet value than BIC, AIC would be used as the result.
+
+Based on AIC, model C is the best model to explain the change in GPAs over time since AIC is the smallest.
+
+# Question 2
+
+`effectiveness teachers -> is this mean two different types of teachers or if there is effectiveness or not`
+
+## 1
+
+As you can see from the visualization, both categories are gradually increasing over the time. 
+
+To compare between the effectiveness 0 and 1, effectiveness 1 has higher initial math score and larger rate of change than effectiveness 0. 
+
+## 2
+
+* Fixed effect:
+
+The initial status of test score at the first occasion is 52.94 (0.081) at 0.01 level of significance.
+
+* Variance components `where can I get the inside of ()`
+
+Level 1 (within person variance) gets the estimate of 78.10 ().
+
+Level 2 (between person variance) receives the estimate of 30.50 ().
+
+* ICC
+
+ICC = 30.50 / (30.50 + 78.10) = 0.28
+
+28% variation on test score is attributable to differences among students. 
+
+## 3
+
+* Rate of change
+
+The estimated rate of change in test score for an average student is 4.23 (p < 0.01). 
+
+So we can interpret this estimate: there is a increase in test score over the three occasions with a 4.23 score of increase each year.
+
+## 4
+
+* Fixed effect
+
+1. The estimated initial test score for the average student of effective 0 is 47.33 (p < 0.01)
+
+2. The estimated differential in initial test score between effective 0 and 1 is 2.50 (p < 0.01)
+
+3. the estimated rate of change in test score for an average student of effective 0 is 2.40 (p < 0.01)
+
+4. The estimated differential in the rate of change in test score between effective 0 and 1 is 3.32 (p < 0.01)
+
+* variance components
+
+Level 1 (within person variance) gets the estimate of 55.75 ().
+
+Level 2 (between person variance) receives the estimate of 34.41 () for the initial status and 1.72 () for the rate of change.
+
+## 5
+
+
+
+## 6
+
+
+
+## 7
+
+
+
+
+
+
+
+
