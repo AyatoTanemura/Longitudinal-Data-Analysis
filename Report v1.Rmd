@@ -72,13 +72,13 @@ GPA = 2.60 + 0.11 * Occas + e  (With composite residual : e = y_0i + y_1i * Occa
 
 4. The estimated differential in the rate of change in gender is 0.029. However, the estimate differential in the rate of change in GPA between male and female is indistinguishable (p > 0.01).
 
-* Variance components `where can I get the inside of ()`
+* Variance components 
 ```{r}
 
 ```
-Level 1 (within person variance) gets the estimate of 0.042 ().
+Level 1 (within person variance) gets the estimate of 0.042.
 
-Level 2 (between person variance) receives the estimate of 0.043 () for the initial status and 0.0043 () for the rate of change.
+Level 2 (between person variance) receives the estimate of 0.043 for the initial status and 0.0043 for the rate of change.
 
 * Pseudo R2 statistics:
 
@@ -140,13 +140,13 @@ To compare between the effectiveness 0 and 1, effectiveness 1 has higher initial
 
 The initial status of test score at the first occasion is 52.94 (0.081) at 0.01 level of significance.
 
-* Variance components `where can I get the inside of ()`
+* Variance components 
 ```{r}
 
 ```
-Level 1 (within person variance) gets the estimate of 78.10 ().
+Level 1 (within person variance) gets the estimate of 78.10.
 
-Level 2 (between person variance) receives the estimate of 30.50 ().
+Level 2 (between person variance) receives the estimate of 30.50.
 
 * ICC
 
