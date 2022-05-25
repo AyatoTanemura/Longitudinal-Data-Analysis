@@ -1,6 +1,6 @@
 ---
 title: "Assignment 2"
-author: "Ayato Tanemura (atan524)"
+author: "Ayato Tanemura (atan524, 825159894)"
 output: 
   pdf_document:
     toc: true
@@ -12,13 +12,33 @@ output:
 
 ```{r include=FALSE}
 knitr::opts_chunk$set(comment = ">", echo=FALSE)
+
+library(lattice)
+library(gplots)
+library(nparLD)
+library(tidyverse)
+library(nlme)
 ```
 
 # Question 1
+```{r}
+gpa <- read.csv("Data/gpa.csv", header = TRUE) %>% 
+  mutate(sex = as.factor(sex))
+```
 
 ## 1
-```{r}
+```{r echo=FALSE}
+## First 10 students Q1
 
+gpa10 <- gpa[gpa$student %in% c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), ]
+
+# Data Viz----
+
+xyplot(gpa ~ occas | student, data = gpa10,
+       panel = function(x, y){
+  panel.xyplot(x, y)
+  panel.lmline(x, y)
+}, ylim = c(-2, 5), as.table = T)
 ```
 GPA and Occasion appears linear in six consecutive occasions.
 
@@ -30,7 +50,9 @@ Generally there is considerable changes in GPA over years. And it is a linear tr
 
 ### Unconditional means model
 ```{r}
+model.gpa <- lme(gpa ~ 1, gpa, random = ~1 |student)
 
+summary(model.gpa)
 ```
 * The composite model is :
 
@@ -42,7 +64,9 @@ The initial status of GPA at occasion 0 is 2.87 (p-vale = 0) at 0.01 level of si
 
 ### Unconditional growth model
 ```{r}
+a.model.gpa <- lme(gpa ~ occas , data = gpa, random = ~ occas | student, method = "ML")
 
+summary(a.model.gpa)
 ```
 * The composite model: 
 
@@ -60,7 +84,9 @@ GPA = 2.60 + 0.11 * Occas + e  (With composite residual : e = y_0i + y_1i * Occa
 
 ## 3
 ```{r}
+b.model.gpa <- lme(gpa ~ sex*occas , data = gpa, random = ~ occas | student, method = "ML")
 
+summary(b.model.gpa)
 ```
 * Estimate of fixed effect:
 
@@ -74,21 +100,26 @@ GPA = 2.60 + 0.11 * Occas + e  (With composite residual : e = y_0i + y_1i * Occa
 
 * Variance components 
 ```{r}
-
+VarCorr(b.model.gpa)
 ```
 Level 1 (within person variance) gets the estimate of 0.042.
 
 Level 2 (between person variance) receives the estimate of 0.043 for the initial status and 0.0043 for the rate of change.
 
 * Pseudo R2 statistics:
-
+```{r}
+VarCorr(a.model.gpa)
+VarCorr(b.model.gpa)
+```
 Pseudo R2 = (0.043433442 - 0.04485619) / 0.043433442 = -0.0328
 
 -> 3.28% of the between-person variability in EMPL is associated with linear time.
 
 ## 4
 ```{r}
+c.model.gpa <- lme(gpa ~ sex*occas +  highgpa*occas, data = gpa, random = ~ occas | student, method = "ML")
 
+summary(c.model.gpa)
 ```
 * The effect on initial status and rate of change
 
@@ -105,9 +136,6 @@ Pseudo R2 = (0.043433442 - 0.04485619) / 0.043433442 = -0.0328
 6. The estimated differential in the rate of change of GDP in high school is -0.00046. However, the estimate differential in the rate of change in GPA of GPA in high school is indistinguishable (p > 0.01). 
 
 ## 5
-```{r}
-
-```
 
 Let's say the unconditional growth model without predictor is model A, the unconditional growth model with the gender predictor is model B, and the unconditional growth model with the gender and GPA in high school predictors is model C.
 
@@ -126,12 +154,28 @@ According to the outcome as above, AIC and BIC show the different result. Since 
 Based on AIC, model C is the best model to explain the change in GPAs over time since AIC is the smallest.
 
 # Question 2
-
-`effectiveness teachers -> is this mean two different types of teachers or if there is effectiveness or not`
+```{r}
+math <- read.csv("Data/mathscore.csv", head = TRUE)
+```
 
 ## 1
 ```{r}
+a.model.math <- lme(test ~ effective*time, data = math, random = ~ time | id, method = "ML")
 
+a.fixef.math <- fixef(a.model.math)
+
+a0.fit.math <- a.fixef.math[[1]] + math$time[1:3]*a.fixef.math[[3]]
+
+a1.fit.math <- a.fixef.math[[1]] + a.fixef.math[[2]] + math$time[1:3]*a.fixef.math[[3]] + math$time[1:3]*a.fixef.math[[4]]
+
+plot(math$time[1:3], a0.fit.math,  ylim=c(45, 65), type="b", 
+     ylab="predicted test", xlab="year")
+
+lines(math$time[1:3], a1.fit.math, type="b", pch=17)   
+
+title("Model A") 
+
+legend(0.0, 65,c("effective=o", "effective=^"))
 ```
 As you can see from the visualization, both categories are gradually increasing over the time. 
 
@@ -139,7 +183,9 @@ To compare between the effectiveness 0 and 1, effectiveness 1 has higher initial
 
 ## 2
 ```{r}
+b.model.math <- lme(test ~ 1, math, random = ~1 | id)
 
+summary(b.model.math)
 ```
 * Fixed effect:
 
@@ -147,7 +193,7 @@ The initial status of test score at the first occasion is 52.94 (p = 0) at 0.01 
 
 * Variance components 
 ```{r}
-
+VarCorr(b.model.math)
 ```
 Level 1 (within person variance) gets the estimate of 78.10.
 
@@ -161,7 +207,9 @@ ICC = 30.50 / (30.50 + 78.10) = 0.28
 
 ## 3
 ```{r}
+c.model.math <- lme(test ~ time, data = math, random = ~ time | id, method = "ML")
 
+summary(c.model.math)
 ```
 * Rate of change
 
@@ -171,7 +219,9 @@ So we can interpret this estimate: there is a increase in test score over the th
 
 ## 4
 ```{r}
+d.model.math <- lme(test ~ effective*time, data = math, random = ~ time | id, method = "ML")
 
+summary(d.model.math)
 ```
 * Fixed effect
 
@@ -185,7 +235,7 @@ So we can interpret this estimate: there is a increase in test score over the th
 
 * variance components
 ```{r}
-
+VarCorr(d.model.math)
 ```
 Level 1 (within person variance) gets the estimate of 55.75.
 
@@ -193,7 +243,9 @@ Level 2 (between person variance) receives the estimate of 34.41 for the initial
 
 ## 5
 ```{r}
+e.model.math <- lme(test ~ effective*time + ses*time, data = math, random = ~ time | id, method = "ML")
 
+summary(e.model.math)
 ```
 * Fixed Effect
 
@@ -217,7 +269,9 @@ In the first year, student who have got a higher score for ses tend to get a hig
 
 ## 6
 ```{r}
+f.model.math <- lme(test ~ ses + effective*time, data = math, random = ~ time | id, method = "ML")
 
+summary(f.model.math)
 ```
 
 * Fixed Effect
@@ -235,6 +289,7 @@ In the first year, student who have got a higher score for ses tend to get a hig
 * Variance Components
 
 ```{r}
+VarCorr(f.model.math)
 
 ```
 
