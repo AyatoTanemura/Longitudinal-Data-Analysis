@@ -1,5 +1,5 @@
 ---
-title: "Assignment 1"
+title: "Assignment 2"
 author: "Ayato Tanemura (atan524)"
 output: 
   pdf_document:
@@ -64,11 +64,11 @@ GPA = 2.60 + 0.11 * Occas + e  (With composite residual : e = y_0i + y_1i * Occa
 ```
 * Estimate of fixed effect:
 
-1. The estimated initial GPA for the average male is 2.56 (p < 0.01).
+1. The estimated initial GPA for the average male is 2.56 (p < 0.01) at 0.01 level of significance.
 
-2. The estimated differential initial GPA between male and female is 0.076 (p > 0.01).
+2. The estimated differential initial GPA between male and female is 0.076 (p > 0.01) at 0.01 level of significance.
 
-3. The estimated rate of change in GPA for an average male is 0.29 (p < 0.01).
+3. The estimated rate of change in GPA for an average male is 0.29 (p < 0.01) at 0.01 level of significance.
 
 4. The estimated differential in the rate of change in gender is 0.029. However, the estimate differential in the rate of change in GPA between male and female is indistinguishable (p > 0.01).
 
@@ -94,11 +94,11 @@ Pseudo R2 = (0.043433442 - 0.04485619) / 0.043433442 = -0.0328
 
 1. The estimated initial GPA for the average male is 2.28 (p < 0.01).
 
-2. The estimated differential in initial GPA between gender, controlling for GPA in high school is 0.084 (p < 0.05)
+2. The estimated differential in initial GPA between gender, controlling for GPA in high school is 0.084 (p < 0.05) at 0.05 level of significance.
 
-3. The estimated rate of change in GPA for an average male is 0.093 (p < 0.01).
+3. The estimated rate of change in GPA for an average male, controlling for GPA in high school is 0.093 (p < 0.01) at 0.01 level of significance.
 
-4. The estimated differential in initial GPA for difference in GPA controlling for gender at the initial stage is 0.094 (p < 0.01).
+4. The estimated differential in initial GPA for difference in GPA controlling for gender at the initial stage is 0.094 (p < 0.01) at 0.01 level of significance.
 
 5. The estimated differential in the rate of change in gender is 0.029. However, the estimated differential in the rate of change in GPA between gender is indistinguishable from 0 (p > 0.01).
 
@@ -108,6 +108,11 @@ Pseudo R2 = (0.043433442 - 0.04485619) / 0.043433442 = -0.0328
 ```{r}
 
 ```
+
+Let's say the unconditional growth model without predictor is model A, the unconditional growth model with the gender predictor is model B, and the unconditional growth model with the gender and GPA in high school predictors is model C.
+
+The outcomes of AIC and BIC are the following;
+
 AIC & BIC
 
 model A: 258.2342, 288.7747 
@@ -138,7 +143,7 @@ To compare between the effectiveness 0 and 1, effectiveness 1 has higher initial
 ```
 * Fixed effect:
 
-The initial status of test score at the first occasion is 52.94 (0.081) at 0.01 level of significance.
+The initial status of test score at the first occasion is 52.94 (p = 0) at 0.01 level of significance.
 
 * Variance components 
 ```{r}
@@ -160,7 +165,7 @@ ICC = 30.50 / (30.50 + 78.10) = 0.28
 ```
 * Rate of change
 
-The estimated rate of change in test score for an average student is 4.23 (p < 0.01). 
+The estimated rate of change in test score for an average student is 4.23 (p < 0.01) at 0.01 level of significance. 
 
 So we can interpret this estimate: there is a increase in test score over the three occasions with a 4.23 score of increase each year.
 
@@ -170,39 +175,94 @@ So we can interpret this estimate: there is a increase in test score over the th
 ```
 * Fixed effect
 
-1. The estimated initial test score for the average student of effective 0 is 47.33 (p < 0.01)
+1. The estimated initial test score for the average student of effective 0 is 47.33 (p < 0.01) at 0.01 level of significance.
 
-2. The estimated differential in initial test score between effective 0 and 1 is 2.50 (p < 0.01)
+2. The estimated differential in initial test score between effective 0 and 1 is 2.50 (p < 0.01) at 0.01 level of significance.
 
-3. the estimated rate of change in test score for an average student of effective 0 is 2.40 (p < 0.01)
+3. the estimated rate of change in test score for an average student of effective 0 is 2.40 (p < 0.01) at 0.01 level of significance.
 
-4. The estimated differential in the rate of change in test score between effective 0 and 1 is 3.32 (p < 0.01)
+4. The estimated differential in the rate of change in test score between effective 0 and 1 is 3.32 (p < 0.01) at 0.01 level of significance.
 
 * variance components
 ```{r}
 
 ```
-Level 1 (within person variance) gets the estimate of 55.75 ().
+Level 1 (within person variance) gets the estimate of 55.75.
 
-Level 2 (between person variance) receives the estimate of 34.41 () for the initial status and 1.72 () for the rate of change.
+Level 2 (between person variance) receives the estimate of 34.41 for the initial status and 1.72 for the rate of change.
 
 ## 5
 ```{r}
 
 ```
+* Fixed Effect
 
+1. The estimated initial test score for the average teacher's effectiveness 0, controlling for ses is 47.33 (p < 0.01) at 0.01 level of significance.
+
+2. The estimated differential in initial test score between effectiveness 0 and 1, controlling for ses is 2.50 (p < 0.01) at 0.01 level of significance.
+
+3. The estimated rate of change in test score for an average teacher's effectiveness 0, controlling for ses is 2.41 (p < 0.01) at 0.01 level of significance.
+
+4. The estimated differential in initial test score for 1 score difference in ses controlling for effectiveness at the initial stage is 0.23 (p < 0.1) at 0.1 level of significance.
+
+5. The estimated differential in the rate of change in test score between effectiveness 0 and 1 is 3.31 (p < 0.01) at 0.01 level of significance.
+
+6. The estimated differential in the rate of change in test score of ses is 0.15  (p < 0.05) at 0.05 level of significance.
+
+We conclude that students who have got teacher's effectiveness 1 get higher test score initially than teacher's effective 0 and the rate of change for teacher's effective 1 is higher than effective 0. 
+
+We also conclude that ses is positively associated with the early test score but negatively associated with the rate of change in the test score 
+
+In the first year, student who have got a higher score for ses tend to get a higher test score. But they have a slower rate of increase in the test score over time. 
 
 ## 6
 ```{r}
 
 ```
 
+* Fixed Effect
+
+1. The estimated initial test score for teacher's effectiveness 0, controlling for ses is 47.33 (p < 0.01) at 0.01 level of significance.
+
+2. The estimated differential in initial test score for 1 score difference in ses controlling for effectiveness at the initial stage is 0.0677 (p > 0.1) at non-significant level.
+
+3. The estimated differential in initial test score between effectiveness 0 and 1 controlling for ses is 2.498 (p < 0.01) at 0.01 level of significance.
+
+4. The estimated rate of change in test score for 1 score difference in ses is 2.404 (p < 0.01) at 0.01 level of significance.
+
+5. The estimated differential in the rate of change in test score of ses is 3.32 (p < 0.01) at 0.01 level of significance.
+
+* Variance Components
+
+```{r}
+
+```
+
+Level 1 (within person variance) gets the estimate of 55.75.
+
+Level 2 (between person variance) receives the estimate of 34.39 for the initial status and 1.72 for the rate of change.
 
 ## 7
 
+Let's say the unconditional growth model without any predictors is model C, the unconditional growth model with the effectiveness predictor is model D, the unconditional growth model with the effectiveness and ses predictors is model E, and the unconditional growth model with the ses predictor only for initial status and the effectiveness predictor for time is model F. 
 
+The outcomes of AIC and BIC are the following;
 
+AIC & BIC
 
+model C: 189288.7, 189337.7
+
+model D: 187170.1, 187235.4
+
+model E: 187169.4, 187251.1
+
+model F: 187171.6, 187245.1
+
+To compare the numbers by AIC, model C is the largest and model E is the smallest, however, in the BIC case, the model with the largest number is the same but the model with the smallest number is model D. 
+
+In my perspective, I would rather use AIC to select the best model since the gap between the smalles number and the second smallest number is larger than BIC.
+
+Therefore, model E is the most appropriate to use at the end. 
 
 
 

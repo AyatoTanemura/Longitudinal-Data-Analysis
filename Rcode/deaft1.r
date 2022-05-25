@@ -161,6 +161,8 @@ summary(e.model.math)
 
 # Model F (effective teacher & ses effects, init for both and ROA for effecive only ) Q6
 
-f.model.math <- lme(test ~ effective*time + ses, data = math, random = ~ time | id, method = "ML")
+f.model.math <- lme(test ~ ses + effective*time, data = math, random = ~ time | id, method = "ML")
 
 summary(f.model.math)
+
+VarCorr(f.model.math)
